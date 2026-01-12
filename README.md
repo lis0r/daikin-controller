@@ -116,7 +116,7 @@ function (err, ret, response)
 
 ### DaikinAC(ip, options, callback)
 Constructor to initialize the Daikin instance to interact with the device.
-Usage see example above, the "options" parameter is optional. Using "options" you can set a **logger** function (see example). Additionally you can set the special flag **useGetToPost** for older Firmwares of the Daikin-WLAN-Interfaces (<1.4) that only supported HTTP GET also to set data. So if you get errors using it then you try if it works better with this flag.
+Usage see example above, the "options" parameter is optional. Using "options" you can set a **logger** function (see example). Additionally you can set the special flag **useGetToPost** for older Firmwares of the Daikin-WLAN-Interfaces (<1.4) that only supported HTTP GET also to set data. So if you get errors using it then you try if it works better with this flag. **requestTimeout** and **responseTimeout** allow customisation of HTTP timeouts when communication with the device, defaulting to 5000ms.
 The callback function is called after initializing the device and requesting currentCommonBasicInfo and currentACModelInfo.
 
 ### setUpdate(updateInterval, callback)

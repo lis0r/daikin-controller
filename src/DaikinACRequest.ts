@@ -28,6 +28,8 @@ export interface SetSpecialModeRequestObject {
 export interface DaikinACOptions {
     logger?: Logger;
     useGetToPost?: boolean;
+    requestTimeout?: number;
+    responseTimeout?: number;
 }
 
 export type ResponseHandler = (data: Error | string | Buffer, response?: unknown) => void;
@@ -46,6 +48,8 @@ export class DaikinACRequest {
     private readonly useGetToPost: boolean = false;
     private readonly ip: string;
     private restClient: any;
+    private readonly requestTimeout: number = 5000;
+    private readonly responseTimeout: number = 5000;
 
     public constructor(ip: string, options: DaikinACOptions) {
         this.ip = ip;
@@ -54,6 +58,12 @@ export class DaikinACRequest {
         }
         if (options.useGetToPost) {
             this.useGetToPost = true;
+        }
+        if (options.requestTimeout !== undefined) {
+            this.requestTimeout = options.requestTimeout;
+        }
+        if (options.responseTimeout !== undefined) {
+            this.responseTimeout = options.responseTimeout;
         }
         this.restClient = new RestClient();
     }
@@ -75,13 +85,13 @@ export class DaikinACRequest {
                 'Accept-Encoding': 'gzip, deflate',
             },
             requestConfig: {
-                timeout: 5000, //request timeout in milliseconds
+                timeout: this.requestTimeout, //request timeout in milliseconds
                 noDelay: true, //Enable/disable the Nagle algorithm
                 keepAlive: false, //Enable/disable keep-alive functionalityidle socket.
                 //keepAliveDelay: 1000 //and optionally set the initial delay before the first keepalive probe is sent
             },
             responseConfig: {
-                timeout: 5000, //response timeout
+                timeout: this.responseTimeout, //response timeout
             },
         };
         if (this.logger) this.logger(`Call GET ${url} with ${JSON.stringify(reqParams)}`);
@@ -128,13 +138,13 @@ export class DaikinACRequest {
                 'Accept-Encoding': 'gzip, deflate',
             },
             requestConfig: {
-                timeout: 5000, //request timeout in milliseconds
+                timeout: this.requestTimeout, //request timeout in milliseconds
                 noDelay: true, //Enable/disable the Nagle algorithm
                 keepAlive: false, //Enable/disable keep-alive functionalityidle socket.
                 //keepAliveDelay: 1000 //and optionally set the initial delay before the first keepalive probe is sent
             },
             responseConfig: {
-                timeout: 5000, //response timeout
+                timeout: this.responseTimeout, //response timeout
             },
         };
         if (this.logger) {

@@ -9,6 +9,8 @@ export interface DaikinManagerOptions {
     deviceList?: { [name: string]: string };
     logger?: Logger;
     useGetToPost?: boolean;
+    requestTimeout?: number;
+    responseTimeout?: number;
     logInitialDeviceConnection: boolean;
     initializeCB?: (message: string) => void;
 }
@@ -19,7 +21,12 @@ export class DaikinManager {
     public managerOptions: DaikinManagerOptions;
 
     public constructor(options: DaikinManagerOptions) {
-        this.daikinAcOptions = { logger: options.logger, useGetToPost: options.useGetToPost };
+        this.daikinAcOptions = {
+            logger: options.logger,
+            useGetToPost: options.useGetToPost,
+            requestTimeout: options.requestTimeout,
+            responseTimeout: options.responseTimeout,
+        };
         this.managerOptions = options;
         if (options.addDevicesByDiscovery) {
             this.startDiscovery(options.deviceDiscoveryWaitCount ?? 2);
